@@ -1,0 +1,17 @@
+changelog:
+  exclude:
+    authors:
+      - GitHub
+      - dependabot[bot]
+      - bot
+  categories:
+    - title: 🎉 Features (aka what makes us proud)
+      labels:
+        - enhancement
+        - good first issue
+    - title: 🔥 Bugs (aka mistake we made)
+      labels:
+        - bug
+    - title: 🤡 Misc (aka things we had no idea how to sort)
+      labels:
+        - "*"
