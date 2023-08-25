@@ -1,0 +1,53 @@
+name: Publish a release
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Release branch'
+        required: false
+        default: main
+      version:
+        description: 'Release version'
+        required: true
+      nextVersion:
+        description: 'Next version after release (-SNAPSHOT will be added automatically)'
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.inputs.branch }}
+        fetch-depth: 0
+    - name: Git setup
+      run: .github/scripts/setup-git.sh
+    - name: Java setup
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Run a build of the code base before release
+      run: ./mvnw --batch-mode --no-transfer-progress clean install
+    - name: Set release version
+      run: ./mvnw --batch-mode --no-transfer-progress versions:set -DnewVersion=${{ github.event.inputs.version }}
+    - name: Commit and tag release version
+      run: git commit -am "Release ${{ github.event.inputs.version }}" && git tag -am "Release ${{ github.event.inputs.version }}"
+    - name: Release with JReleaser
+      env:
+        JRELEASER_TAG_NAME: ${{ github.event.inputs.version }}
+        JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.JRELEASER_GPG_PUBLIC_KEY }}
+        JRELEASER_GPG_SECRET_KEY: ${{ secrets.JRELEASER_GPG_SECRET_KEY }}
+        JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
+        JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: .github/scripts/release.sh
+    - name: Set the next release version
+      run: ./mvnw --batch-mode --no-transfer-progress versions:set -DnewVersion=${{ github.event.inputs.nextVersion }}-SNAPSHOT
+    - name: Commit next snapshot version
+      run: git commit -am "Move to ${{ github.event.inputs.nextVersion }}-SNAPSHOT"
+    - name: Push pending commits / tags
+      run: git push --tags
