@@ -3,10 +3,6 @@ name: Publish a release
 on:
   workflow_dispatch:
     inputs:
-      branch:
-        description: 'Release branch'
-        required: false
-        default: main
       version:
         description: 'Release version'
         required: true
@@ -21,7 +17,6 @@ jobs:
     - name: Git checkout
       uses: actions/checkout@v3
       with:
-        ref: ${{ github.event.inputs.branch }}
         fetch-depth: 0
     - name: Git setup
       run: .github/scripts/setup-git.sh
