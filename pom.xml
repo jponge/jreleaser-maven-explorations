@@ -147,6 +147,7 @@
                     </changelog>
                     <releaseNotes>
                       <enabled>true</enabled>
+                      <configurationFile>.github/release.yml</configurationFile>
                     </releaseNotes>
                   </github>
                 </release>

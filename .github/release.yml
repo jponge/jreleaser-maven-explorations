@@ -3,6 +3,7 @@ changelog:
     authors:
       - GitHub
       - dependabot[bot]
+      - smallrye[bot]
       - bot
   categories:
     - title: 🎉 Features (aka what makes us proud)
