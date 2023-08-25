@@ -45,5 +45,5 @@ jobs:
       run: ./mvnw --batch-mode --no-transfer-progress versions:set -DnewVersion=${{ github.event.inputs.nextVersion }}-SNAPSHOT
     - name: Commit next snapshot version
       run: git commit -am "Move to ${{ github.event.inputs.nextVersion }}-SNAPSHOT"
-    - name: Push pending commits / tags
-      run: git push --tags
+    - name: Push pending commits
+      run: git push
