@@ -141,6 +141,13 @@
                 <release>
                   <github>
                     <owner>jponge</owner>
+                    <!-- Use GitHub release notes rather than a changelog generation -->
+                    <changelog>
+                      <enabled>false</enabled>
+                    </changelog>
+                    <releaseNotes>
+                      <enabled>true</enabled>
+                    </releaseNotes>
                   </github>
                 </release>
               </jreleaser>
