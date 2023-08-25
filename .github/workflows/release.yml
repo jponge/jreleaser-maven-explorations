@@ -30,8 +30,8 @@ jobs:
       run: ./mvnw --batch-mode --no-transfer-progress clean install
     - name: Set release version
       run: ./mvnw --batch-mode --no-transfer-progress versions:set -DnewVersion=${{ github.event.inputs.version }}
-    - name: Commit and tag release version
-      run: git commit -am "Release ${{ github.event.inputs.version }}" && git tag -am "Release ${{ github.event.inputs.version }}"
+    - name: Commit release version
+      run: git commit -am "Release ${{ github.event.inputs.version }}"
     - name: Release with JReleaser
       env:
         JRELEASER_TAG_NAME: ${{ github.event.inputs.version }}
